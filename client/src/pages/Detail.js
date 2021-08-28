@@ -4,7 +4,7 @@ import { useQuery } from '@apollo/react-hooks';
 
 import Cart from '../components/Cart';
 // import { useStoreContext } from '../utils/GlobalState';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import {
   REMOVE_FROM_CART,
   UPDATE_CART_QUANTITY,
@@ -24,7 +24,9 @@ function Detail() {
 
   const { loading, data } = useQuery(QUERY_PRODUCTS);
 
-  const { products, cart } = state;
+  // const { products, cart } = state;
+  const products = useSelector((state) => state.products);
+  const cart = useSelector((state) => state.cart);
 
   useEffect(() => {
     // already in global store
