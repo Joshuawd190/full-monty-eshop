@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
 import ProductItem from '../ProductItem';
 // import { useStoreContext } from "../../utils/GlobalState";
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { UPDATE_PRODUCTS } from '../../utils/actions';
 import { useQuery } from '@apollo/react-hooks';
 import { QUERY_PRODUCTS } from '../../utils/queries';
@@ -11,8 +11,9 @@ import spinner from '../../assets/spinner.gif';
 function ProductList() {
   // const [state, dispatch] = useStoreContext();
   const dispatch = useDispatch();
-
-  const { currentCategory } = state;
+  const currentCategory = useSelector((state) => state.currentCategory);
+  const products = useSelector((state) => state.products);
+  // const { currentCategory } = state;
 
   const { loading, data } = useQuery(QUERY_PRODUCTS);
 
@@ -37,10 +38,10 @@ function ProductList() {
 
   function filterProducts() {
     if (!currentCategory) {
-      return state.products;
+      return products;
     }
 
-    return state.products.filter(
+    return products.filter(
       (product) => product.category._id === currentCategory
     );
   }
@@ -48,7 +49,7 @@ function ProductList() {
   return (
     <div className='my-2'>
       <h2>Our Products:</h2>
-      {state.products.length ? (
+      {products.length ? (
         <div className='flex-row'>
           {filterProducts().map((product) => (
             <ProductItem
